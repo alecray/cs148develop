@@ -1,3 +1,6 @@
-SELECT fnkCourseId,fldCRN,fnkTeacherNetId,fldMaxStudents,fldNumStudents,fldSection,fldType,fldStart,fldStop,fldDays,fldBuilding,fldRoom
+SELECT DISTINCT fldCourseName, tblSections.fldDays, tblSections.fldStart 
 FROM tblSections 
-WHERE fldBuilding LIKE 'KALKIN%' AND fldStart = "13:10:00"
+INNER JOIN tblCourses on pmkCourseId = tblSections.fnkCourseId 
+INNER JOIN tblTeachers on pmkNetId = fnkTeacherNetId 
+WHERE tblTeachers.fldLastName = "Horton"
+GROUP BY tblSections.fldStart

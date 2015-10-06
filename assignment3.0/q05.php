@@ -9,14 +9,14 @@
 // This file is only for class purposes and should never be publicly live
 //##############################################################################
 include "top.php";
-	$columns = 2;
+	$columns = 3;
 	
 	print '<table>';
 	$query = file_get_contents('sql/q05.sql');
-	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 0, 0,0 , false, false);
+	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 1, 2,0 , false, false);
 	print $query;
 	print '<br>';
-	$info2 = $thisDatabaseReader->select($query, "", 0, 1, 4,0 , false, false);
+	$info2 = $thisDatabaseReader->select($query, "", 0, 1, 2,0 , false, false);
 	$numRecords = count($info2);
     $highlight = 0; // used to highlight alternate rows
 	print '<br>';

@@ -1,3 +1,3 @@
-SELECT fldCourseName, fldDepartment
-FROM tblCourses
-WHERE fldCourseName LIKE "%data%" AND fldDepartment != "CS"
+SELECT fldFirstName, fldPhone, fldSalary
+FROM tblTeachers
+WHERE fldSalary <= (SELECT AVG(fldSalary) FROM tblTeachers)

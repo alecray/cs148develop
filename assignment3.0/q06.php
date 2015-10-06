@@ -13,10 +13,10 @@ include "top.php";
 	
 	print '<table>';
 	$query = file_get_contents('sql/q06.sql');
-	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 0, 0,0 , false, false);
+	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 0, 0,1 , false, false);
 	print $query;
 	print '<br>';
-	$info2 = $thisDatabaseReader->select($query, "", 0, 2, 4,0 , false, false);
+	$info2 = $thisDatabaseReader->select($query, "", 0, 0, 0,1 , false, false);
 	$numRecords = count($info2);
     $highlight = 0; // used to highlight alternate rows
 	print '<br>';

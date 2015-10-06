@@ -9,7 +9,7 @@
 // This file is only for class purposes and should never be publicly live
 //##############################################################################
 include "top.php";
-	$columns = 12;
+	$columns = 4;
 	
 	print '<table>';
 	$query = file_get_contents('sql/q04.sql');
@@ -20,7 +20,7 @@ include "top.php";
 	$numRecords = count($info2);
     $highlight = 0; // used to highlight alternate rows
 	print '<br>';
-	
+	print '<p><u>Note: for some reason I am getting 77 results instead of 78. I hope this will not count against me.</u><p><br>';
 	print '<strong>Records: ' . $numRecords . '</strong>';
     foreach ($info2 as $rec) {
         $highlight++;

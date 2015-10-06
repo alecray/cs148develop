@@ -1,3 +1,6 @@
-SELECT fnkCourseId,fldCRN,fnkTeacherNetId,fldMaxStudents,fldNumStudents,fldSection,fldType,fldStart,fldStop,fldDays,fldBuilding,fldRoom
-FROM tblSections 
-WHERE fldCRN = 90480
+SELECT fldCRN, fldFirstName, fldLastName, tblEnrolls.fnkCourseId
+FROM tblStudents
+INNER JOIN tblEnrolls on pmkStudentId = tblEnrolls.fnkStudentId
+INNER JOIN tblSections on tblEnrolls.fnkCourseId = tblSections.fnkCourseId
+WHERE tblEnrolls.fnkCourseId = 392
+GROUP BY fldFirstName
