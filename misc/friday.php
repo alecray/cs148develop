@@ -1,27 +1,29 @@
 <?php
-
-//##############################################################################
-//
-// This page lists your tables and fields within your database. if you click on
-// a database name it will show you all the records for that table. 
-// 
-// 
-// This file is only for class purposes and should never be publicly live
-//##############################################################################
 include "top.php";
-	$columns = 1;
-	
+	$columns = 8;
+	$lowerLimit = (int) $_GET['lowerLimit'];
+	$upperLimit = (int) $_GET['upperLimit'];
 	print '<table>';
-	$query = file_get_contents('sql/q01.sql');
-	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 0, 0,0 , false, false);
+	$query = "SELECT * FROM tblStudents ORDER BY fldLastName, fldFirstName LIMIT " . $lowerLimit . ", " . $upperLimit;
+	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 1, 0,0 , false, false);
 	print $query;
 	print '<br>';
 	$info2 = $thisDatabaseReader->select($query, "", 0, 1, 0,0 , false, false);
+	$fields = array_keys($info2[0]);
+	$labels = array_filter($fields, "is_string");
 	$numRecords = count($info2);
     $highlight = 0; // used to highlight alternate rows
 	print '<br>';
 	
 	print '<strong>Records: ' . $numRecords . '</strong>';
+	foreach ($labels as $label) {
+		$camelCase = preg_split('/(?=[A-Z])_/', substr($label, 3));
+			$message = '';
+		foreach ($camelCase as $one) {
+			$message .= $one . " ";
+		}
+		print '<th>' . $message . '</th>';
+	}
     foreach ($info2 as $rec) {
         $highlight++;
         if ($highlight % 2 != 0) {
