@@ -1,0 +1,28 @@
+.termSectionFall {
+	background-color: orange;
+	float: left;
+	border-radius: 10px;
+	margin: 5px;
+}
+.termSectionWinter {
+	background-color: grey;
+	float: left;
+	border-radius: 10px;
+	margin: 5px;
+}
+.termSectionSpring {
+	background-color: green;
+	color: white;
+	float: left;
+	border-radius: 10px;
+	margin: 5px;
+}
+.termSectionSummer {
+	background-color: yellow;
+	float: left;
+	border-radius: 10px;
+	margin: 5px;
+}
+.finalSec {
+	clear: both;
+}

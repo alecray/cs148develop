@@ -21,6 +21,7 @@ function securityCheck($path_parts, $yourURL, $form = false) {
     $whiteListPages[] = "tables.php";
     $whiteListPages[] = "join.php";
 	$whiteListPages[] = "index.php";
+	$whiteListPages[] = "newPlanForm.php";
 
     //add all the folders to this array
     $whiteListFolders = array();

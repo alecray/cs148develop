@@ -15,6 +15,12 @@
         } else {
             print '<li><a href="tables.php">Display Tables</a></li>';
         }
+		
+		if ($path_parts['filename'] == "newPlanForm") {
+            print '<li class="activePage">New Plan</li>';
+        } else {
+            print '<li><a href="newPlanForm.php">New Plan</a></li>';
+        }
         
         //if ($path_parts['filename'] == "populate-table.php") {
         //    print '<li class="activePage">Populate Tables</li>';

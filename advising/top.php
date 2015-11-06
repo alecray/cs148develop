@@ -5,7 +5,7 @@ require_once('lib/custom-functions.php');
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Assignment 1.0</title>
+        <title>Advising</title>
         <meta charset="utf-8">
         <meta name="author" content="Alec Ray">
         <meta name="description" content="The Best Site">
@@ -17,6 +17,7 @@ require_once('lib/custom-functions.php');
         <![endif]-->
 
         <link rel="stylesheet" href="css/base.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="css/more.css" type="text/css" media="screen">
 
         <?php
         $debug = false;
@@ -71,7 +72,10 @@ require_once('lib/custom-functions.php');
             print_r($path_parts);
             print "</pre>";
         }
-        
+		
+        if ($path_parts['filename'] == "newPlanForm") {
+            include "lib/validation-functions.php";
+        }
         $yourURL = $domain . $phpSelf;
 
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
