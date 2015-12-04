@@ -1,0 +1,28 @@
+Schema
+
+CREATE TABLE tblJuices(
+	pmkJuiceID MEDIUMINT NOT NULL AUTO_INCREMENT, 
+	fldName VARCHAR(40),
+	fldLink TEXT,
+	fldRating TINYINT(5),
+	fldVendor TEXT,
+	fldDate DATE());
+	
+CREATE TABLE tblJuicesTags(
+	fnkJuiceId MEDIUMINT,
+	fnkTagId MEDIUMINT);
+	
+CREATE TABLE tblTags(
+	pmkTagId MEDIUMINT
+	fldTag TEXT);
+	
+CREATE TABLE tblPhotos(
+	pmkPhotoId MEDIUMINT NOT NULL AUTO_INCREMENT,
+	fldPhotoLink TEXT,
+	fldUploadDate DATE());
+	
+CREATE TABLE tblComments(
+	pmkCommentId MEDIUMINT NOT NULL AUTO_INCREMENT,
+	fldCommentText TEXT,
+	fldName VARCHAR(100) DEFAULT 'Anonymous',
+	fldDate DATE());

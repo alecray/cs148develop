@@ -1,0 +1,165 @@
+/* 
+    Created on : Jun 10, 2015, 10:27:26 AM
+    Author     : Robert Erickson
+	colors: 2c2b7b (blue) and fdb813 (yellow) fec54d (light yellow)
+*/
+@font-face {
+    font-family: "KenyanCoffee";
+    src: url('https://ajray.w3.uvm.edu/cs148develop/assignment10/kenyancoffee.woff') format('woff');
+}
+/*------------------------   standard elements  ----------------------------- */
+body{
+	font-family: "KenyanCoffee";
+	
+}
+article{
+    padding: 2em;
+}
+figcaption {
+    color: #839e99;
+    font-style: italic;
+    text-align: center;
+}
+
+header{
+    overflow: auto; /* forces header to fit to figure */
+}
+
+header .float_left{
+    margin-top: 0;
+}
+
+header h1{
+    padding-bottom: 2em;
+    padding-top: 75px;
+}
+
+img{
+    max-width: 100%; /* image strinks to fit containor but does not stretch */
+}
+
+section{
+    padding: 2em;
+    width: 40%;  
+}
+
+footer{
+	text-align: center;
+}
+h4{
+	text-align: center;
+}
+/*------------------------   classes           ------------------------------ */
+.float_left {
+    border: thin solid darkslategray;
+    float: left;
+    margin: 1em 1em 1em 0;
+    padding: 0.5em;
+}
+
+.even{
+	margin: 25px !important;
+	background-color: rgba(44,43,123,0.2)
+}
+
+.odd{
+	background-color: #2c2b7b;
+	color: white;
+	padding: 5%;
+}
+
+.small {
+    width: 150px;
+}
+.entries{
+	text-align: center;
+}
+.user {
+	position: absolute;
+}
+/*------------------------   nav section only  ------------------------------ */
+nav {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+nav ol li{
+    display: inline-block;
+    list-style-type: none;
+	padding-right: 1em;
+}
+li a:hover{
+	color: #fdb813;
+}
+nav ol {
+	margin-left: -40px !important;
+	font-size: 1.5em;
+}
+/*------------------------   table page  only  ------------------------------ */
+#table aside{
+    height: 600px; 
+    float: left; 
+    overflow: auto; 
+    margin-left: 2em;            
+}
+#table section{
+    width: 35%; 
+    height: 600px; 
+    float: left; 
+    overflow: auto;
+}
+#table table{
+    border: medium #000080 solid;
+    border-collapse: collapse;
+	
+}
+
+#table td {
+    border: thin #000080 solid;
+    border-collapse: collapse;
+	
+}
+
+#table th{
+    text-align: left;
+}
+
+/*-------------------------- tables ------------------------*/
+
+.juiceList{
+	margin-left: auto;
+	margin-right: auto;
+	border-collapse: collapse;
+}
+
+.juiceList td{
+	padding: 10px;
+	font-size: 1.2em;
+}
+.juiceList tr{
+	border-radius: 10px;
+
+}
+	
+.juiceList tr > td {
+	margin: 10px;
+}
+
+.juiceList td:first-child { 
+    -moz-border-radius:10px 0 0 10px;
+    -webkit-border-radius:10px 0 0 10px;
+}
+.juiceList td:last-child{
+    -moz-border-radius:0 10px 10px 0;
+    -webkit-border-radius:0 10px 10px 0;
+}
+.juiceList th{
+	font-size: 1.5em;
+}
+/*------------------------ IMAGES --------------------------*/
+.headerImage {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}

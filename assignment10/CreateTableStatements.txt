@@ -1,0 +1,34 @@
+CREATE TABLE tblStudents(
+	pmkNetID CHAR(20) NOT NULL,
+	fldFirstName CHAR(20),
+	fldLastName CHAR(20),
+	fldYear INTEGER) UNIQUE (pmkNetID);
+
+CREATE TABLE tblAdvisor(pmkNetID CHAR(20) , fldFirstName CHAR(20), fldLastName CHAR(20), fldDepartment char(20)) UNIQUE (pmkNetID);
+
+CREATE TABLE tblPlan(
+	pmkPlanID CHAR(20), 
+	fnkStudentNetID CHAR(20) NOT NULL, 
+	fnkTeacherNetID CHAR(20) NOT NULL,
+	fldDateCreate DATE, 
+	fldCatalogYear DATE, 
+	fldMajor CHAR(20), 
+	fldMinor CHAR(20), 
+	fldNumCredits INTEGER)
+	UNIQUE (pmkPlanID, fnkStudentNetID, fnkTeacherNetID);
+
+CREATE TABLE tblSemesterPlan(
+	pmkYear DATE NOT NULL,
+	pmkTerm CHAR(6) NOT NULL, 
+	fnkPlanID CHAR(20) NOT NULL,
+	fldDisplayOrder INTEGER, 
+	fldNumCredits INTEGER)
+	UNIQUE (pmkYear, pmkTerm, fnkPlanID);
+
+CREATE TABLE tblSemesterPlanCourses(
+	fnkCourseID INTEGER NOT NULL,
+	fnkPlanID CHAR(20) NOT NULL,
+	fnkYear DATE NOT NULL,
+	fnkTerm CHAR(6) NOT NULL,
+	fldDisplayOrder INTEGER)
+	UNIQUE (fnkPlanID, fnkYear, fnkTerm);
