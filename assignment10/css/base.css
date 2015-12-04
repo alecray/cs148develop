@@ -1,17 +1,16 @@
 /* 
-    Created on : Jun 10, 2015, 10:27:26 AM
-    Author     : Robert Erickson
+    Created on : Dec 12, 2015
+    Author     : Alec Ray
 	colors: 2c2b7b (blue) and fdb813 (yellow) fec54d (light yellow)
 */
 @font-face {
-    font-family: "KenyanCoffee";
-    src: url('https://ajray.w3.uvm.edu/cs148develop/assignment10/fonts/kenyancoffee.woff') format('woff');
-	src: url('https://ajray.w3.uvm.edu/cs148develop/assignment10/fonts/kenyan_coffee_eot.eot') format('eot');
+    font-family: KenyanCoffee; 
+	src: url('../fonts/kenyan_coffee.woff') format("woff");
+		 url('../fonts/kenyan_coffee.eot') format("embedded-opentype");
 }
 /*------------------------   standard elements  ----------------------------- */
 body{
 	font-family: "KenyanCoffee";
-	
 }
 article{
     padding: 2em;
