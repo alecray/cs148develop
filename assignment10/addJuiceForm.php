@@ -283,7 +283,7 @@ if (isset($_POST["btnSubmit"])) {
     // If its the first time coming to the form or there are errors we are going
     // to display the form.
     if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
-        print "<h1>Your Request has ";
+        print "<br><h1>Your Request has ";
 
         if (!$mailed) {
             print "not ";
@@ -423,7 +423,7 @@ if (isset($_POST["btnSubmit"])) {
 					<label for="rating-input-1-1" class="rating-star"></label>
 				</fieldset>
 				<br>
-                <input type="submit" id="btnSubmit" name="btnSubmit" value="Register" tabindex="900" class="button">
+                <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit" tabindex="900" class="button">
                 
             </fieldset> <!-- Ends Wrapper -->
         </form>

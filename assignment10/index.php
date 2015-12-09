@@ -11,6 +11,7 @@ $columns = 6;
 	if(isset($_GET['start'])){
 		$start = $_GET['start'];
 	}
+	print '<br>';
 	print '<table class="juiceList">';
 	$query = "SELECT pmkJuiceId, fldName, fldLink, fldRating, fldVendor, fldDate, fldTag
 			  FROM tblJuices  
@@ -24,7 +25,7 @@ $columns = 6;
 			   ORDER BY fldRating DESC";
 	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 1, 0,0 , false, false);
 	//print $query;
-	print '<br>';
+	
 	$info2 = $thisDatabaseReader->select($query, "", 0, 1, 0,0 , false, false);
 	$totalQuery = $thisDatabaseReader->select($query2, "", 0, 1, 0,0 , false, false);
 	$fields = array_keys($info2[0]);
