@@ -12,6 +12,7 @@ $columns = 6;
 		$start = $_GET['start'];
 	}
 	print '<br>';
+	print '<br>';
 	print '<table class="juiceList">';
 	$query = "SELECT pmkJuiceId, fldName, fldLink, fldRating, fldVendor, fldDate, fldTag
 			  FROM tblJuices  
@@ -33,7 +34,6 @@ $columns = 6;
 	$numRecords = count($info2);
 	$totalNum = count($totalQuery);
     $highlight = 0; // used to highlight alternate rows
-	print '<br>';
 	
 	foreach ($labels as $label) {
 		$camelCase = preg_split('/(?=[A-Z])_/', substr($label, 3));
