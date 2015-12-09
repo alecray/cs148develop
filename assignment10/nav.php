@@ -15,7 +15,14 @@
         } else {
             print '<li><a href="addJuiceForm.php">Add Juice</a></li>';
         }
-		if($username == "ajray"){
+		
+		if ($path_parts['filename'] == "about") {
+            print '<li class="activePage">About</li>';
+        } else {
+            print '<li><a href="about.php">About</a></li>';
+        }
+		
+		if($admin == true){
 			if ($path_parts['filename'] == "tables") {
 				print '<li class="activePage">Display Tables</li>';
 			} else {

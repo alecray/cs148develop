@@ -22,6 +22,9 @@ function securityCheck($path_parts, $yourURL, $form = false) {
     $whiteListPages[] = "join.php";
 	$whiteListPages[] = "index.php";
 	$whiteListPages[] = "addJuiceForm.php";
+	$whiteListPages[] = "starsTest.php";
+	$whiteListPages[] = "about.php";
+	$whiteListPages[] = "editEntry.php";
 
     //add all the folders to this array
     $whiteListFolders = array();

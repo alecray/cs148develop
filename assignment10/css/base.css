@@ -13,7 +13,7 @@ body{
 	font-family: "KenyanCoffee";
 }
 article{
-    padding: 2em;
+	margin-top: -2%;
 }
 figcaption {
     color: #839e99;
@@ -49,6 +49,26 @@ footer{
 h4{
 	text-align: center;
 }
+.buttons {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 225px;
+	padding: 0.5em;
+}
+.buttons button{
+	width: 100px;
+	padding: 0.5em;
+	background-color: #2c2b7b;
+	border-radius: 15px;
+	color: white;
+	border-style: none;
+	margin-right: 0.1em;
+	margin-left: 0.1em;
+}
+.buttons button:hover {
+	background-color: rgba(44,43,123,0.8);
+}
 /*------------------------   classes           ------------------------------ */
 .float_left {
     border: thin solid darkslategray;
@@ -61,13 +81,23 @@ h4{
 	margin: 25px !important;
 	background-color: rgba(44,43,123,0.2)
 }
-
 .odd{
-	background-color: #2c2b7b;
+	background-color: rgba(44,43,123,1);
 	color: white;
 	padding: 5%;
 }
-
+.even a {
+	color: #2c2b7b;
+}
+.odd a {
+	color: white;
+}
+.even:hover {
+	background-color: rgba(44,43,123,0.1)
+}
+.odd:hover {
+	background-color: rgba(44,43,123,0.8);
+}
 .small {
     width: 150px;
 }
@@ -77,6 +107,7 @@ h4{
 .user {
 	position: absolute;
 }
+
 /*------------------------   nav section only  ------------------------------ */
 nav {
 	display: block;
@@ -84,17 +115,29 @@ nav {
 	margin-right: auto;
 	text-align: center;
 }
-nav ol li{
-    display: inline-block;
-    list-style-type: none;
-	padding-right: 1em;
-}
-li a:hover{
-	color: #fdb813;
-}
 nav ol {
 	margin-left: -40px !important;
 	font-size: 1.5em;
+}
+nav ol li{
+    display: inline-block;
+	color: #2c2b7b;
+    list-style-type: none;
+	padding-right: 1em;
+	
+}
+nav ol li a{
+	text-decoration: none;
+}
+
+
+nav ol li a:hover{
+	color: #fdb813;
+	text-decoration: underline;
+}
+nav ol li.activePage {
+	color: #2c2b7b;
+    text-decoration: underline;
 }
 /*------------------------   table page  only  ------------------------------ */
 #table aside{
@@ -133,12 +176,17 @@ nav ol {
 	border-collapse: collapse;
 }
 
+.separator {
+	height: 10px;
+}
 .juiceList td{
 	padding: 10px;
 	font-size: 1.2em;
+	min-width: 200px;
 }
 .juiceList tr{
-	border-radius: 10px;
+	border-radius: 25px;
+	box-shadow: 10px 10px 5px #888888;
 
 }
 	
@@ -156,6 +204,8 @@ nav ol {
 }
 .juiceList th{
 	font-size: 1.5em;
+	padding-left: 5px;
+	text-align: left;
 }
 /*------------------------ IMAGES --------------------------*/
 .headerImage {
@@ -163,3 +213,139 @@ nav ol {
 	margin-left: auto;
 	margin-right: auto;
 }
+
+/*------------------------ ABOUT ----------------------------*/
+.aboutPage {
+	text-align: center;
+	font-size: 1.5em;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0px;
+	padding-bottom: 20px;
+}
+.aboutPage p:hover {
+	color: #fec54d;
+}
+/*------------------------ FORM -----------------------------*/
+#main {
+	width: 30%;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 25px;
+}
+legend {
+	border-;
+	font-size: 22px;
+	padding: 5px;
+	border-radius: 15px;
+	text-align: center;
+}
+fieldset {
+	border: 1px solid #2c2b7b;
+	border-radius: 15px;
+}
+.wrapper{
+	border-style: none;
+}
+fieldset p {
+	font-size: 20px;
+	text-align: center;
+}
+.contact {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+contact input{ 
+    padding: 9px; 
+    border: solid 1px #d5d5d5; 
+    outline: 0; 
+    font: 13px Verdana, Tahoma, sans-serif; 
+    width: 200px; 
+    background: #FFFFFF; 
+    } 
+input:hover,.preview-block input:focus{ 
+    border-color: #2c2b7b; 
+    }    
+#frmRegister .contact label{ 
+	font-size: 18px;
+    margin-left: 10px;
+    color: #2c2b7b; 
+    width: 200px;
+    display: inline-block;
+	padding-bottom: 15px;
+    }    
+.submit input{ 
+    width: auto; 
+    padding: 9px 20px; 
+    background: #2c2b7b; 
+    border: 0; 
+    font-size: 14px; 
+    color: #2c2b7b; 
+    cursor: pointer;
+    }
+	
+#btnSubmit {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+/************************************* STAR RATING ****************************/
+ .starRating {
+      overflow: hidden;
+      display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	  width: 80px;
+  }
+  
+  .rating-input {
+      float: right;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      margin: 0 0 0 -16px;
+      opacity: 0;
+  }
+  .rating-star {
+      display: block;
+      width: 16px;
+      height: 16px;
+      background: url('../images/star_rating.png') 0 -16px;
+  }
+  .rating-star:hover, .rating-star:active, .rating-input:hover+.rating-star, .rating-input:active+.rating-star {
+      background-position: 0 0;
+  }
+    .rating-star {
+      position: relative;
+      float: right;
+      display: block;
+      width: 16px;
+      height: 16px;
+      background: url('../images/star_rating.png') 0 -16px;
+  }
+
+  .rating-star:hover,
+  .rating-star:hover ~ .rating-star {
+      background-position: 0 0;
+  }
+  
+  .rating-star:hover,
+  .rating-star:hover ~ .rating-star,
+  .rating-input:checked ~ .rating-star {
+      background-position: 0 0;
+  }
+   .rating:hover .rating-star:hover,
+  .rating:hover .rating-star:hover ~ .rating-star,
+  .rating-input:checked ~ .rating-star {
+      background-position: 0 0;
+  }
+  .rating-star,
+  .rating:hover .rating-star {
+      position: relative;
+      float: right;
+      display: block;
+      width: 16px;
+      height: 16px;
+      background: url('../images/star_rating.png') 0 -16px;
+  }

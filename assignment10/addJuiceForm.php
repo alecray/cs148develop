@@ -1,13 +1,25 @@
 <?php
 include "top.php";
-
+$editVar = 0;
+if(isset($_GET['id'])){
+	$pmkJuiceId = $_GET['id'];
+	$editVar = 1;
+	print $editVar;
+}
+/***-------------------------- EDIT ------------------------------***/
+if($editVar == 1){
+	$editQuery = 'SELECT fldName, fldLink, fldRating, fldVendor, fldDate
+		  FROM tblJuices WHERE pmkJuiceId = ' .$pmkJuiceId;
+	$editData = $thisDatabaseReader->select($editQuery, "", 1, 0, 0,0 , false, false);
+}
+		
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 // SECTION: 1 Initialize variables
 //
 // SECTION: 1a.
 // variables for the classroom purposes to help find errors.
-
+$editVar = 0;
 $debug = false;
 
 if (isset($_GET["debug"])) { // ONLY do this in a classroom environment
@@ -16,6 +28,8 @@ if (isset($_GET["debug"])) { // ONLY do this in a classroom environment
 
 if ($debug)
     print "<p>DEBUG MODE IS ON</p>";
+
+$columns = 5;
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
@@ -31,12 +45,22 @@ $yourURL = $domain . $phpSelf;
 //
 // Initialize variables one for each form element
 // in the order they appear on the form
-$juiceName = "";
-$email = "youremail@uvm.edu";
-$link = "";
-$vendor = "";
-$rating = "0";
-//$tags = "";
+if($editVar == 1){
+$juiceName = (string)$editData[0][0];
+$email = "";
+$link = (string)$editData[0][1];
+$vendor = (string)$editData[0][3];
+$rating = (string)$editData[0][2];
+$tags = "";
+}
+else {
+	$juiceName = "";
+	$email = "";
+	$link = "";
+	$vendor = "";
+	$rating =  "";
+	$tags = "";
+}
 //$comment = "";
 
 
@@ -51,7 +75,7 @@ $emailERROR = false;
 $linkERROR = false;
 $vendorERROR = false;
 $ratingERROR = false;
-//$tagsERROR = false;
+$tagsERROR = false;
 //$commentERROR = false;
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
@@ -99,8 +123,18 @@ if (isset($_POST["btnSubmit"])) {
     $vendor = htmlentities($_POST["txtVendor"], ENT_QUOTES, "UTF-8");
     $dataRecord[] = $vendor;
 	
-	$rating = $_POST["lstRating"];
+	if(isset($_POST["lstRating"])){
+		$rating = $_POST["lstRating"];
+	}
+	else {
+		$rating = null;
+	}
 	$dataRecord[] = $rating;
+	
+	$tags = preg_replace('/\s+/', '', $tags);
+	$tags = htmlentities($_POST["txtTags"], ENT_QUOTES, "UTF-8");
+	$dataRecord[] = $tags;
+	
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     // SECTION: 2c Validation
@@ -134,12 +168,13 @@ if (isset($_POST["btnSubmit"])) {
     }
 	
     if ($vendor == "") {
-        $errorMsg[] = "Please enter the name of the juice.";
+        $errorMsg[] = "Please enter the name of the juice\'s vendor.";
         $vendorERROR = true;
     } elseif (!verifyAlphaNum($vendor)) {
-        $errorMsg[] = "Your juice name appears to have extra character.";
+        $errorMsg[] = "Your vendor name appears to have extra character.";
         $vendorERROR = true;
     }
+	
 	
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -155,13 +190,37 @@ if (isset($_POST["btnSubmit"])) {
         //
         // SECTION: 2e Save Data
         //
-        // This block saves the data to a CSV file.
+        // This block saves the data to the database.
+		if($editVar == 0){
+			$query = 'INSERT INTO tblJuices (pmkJuiceId,fldName,fldLink,fldVendor,fldRating) VALUES(null,?,?,?,?)';
+			$data = array($juiceName,$link,$vendor,$rating); 
+			$results = $thisDatabaseWriter->insert($query, $data);
+		}
 		
-		$query = 'INSERT INTO tblJuices (fldName,fldLink,fldVendor,fldRating) VALUES(?,?,?,?)';
-		$data = array($juiceName,$link,$vendor,$rating); 
 		
-		$results = $thisDatabaseWriter->insert($query, $data);
-        
+		// I am doing it this way because lastInsert() did not work for me for some reason
+		$queryPMKJuice = 'SELECT MAX(pmkJuiceId) FROM tblJuices'; 
+        $lastJuiceIdArray = $thisDatabaseReader->select($queryPMKJuice, "", 0, 0, 0,0 , false, false);
+		$lastJuiceId = $lastJuiceIdArray[0][0];
+		
+		
+		// ------------- TAGS!!! ------------------------
+		$tagsPieces = explode(" ", $tags);
+		foreach($tagsPieces as $myTag){
+			$tagsQuery = 'INSERT INTO tblTags (fldTag) VALUES (?)';
+			$data2 = array($myTag);
+			$results2 = $thisDatabaseWriter->insert($tagsQuery, $data2);
+			
+			$queryPMKTag = 'SELECT MAX(pmkTagId) FROM tblTags'; 
+			$lastTagIdArray = $thisDatabaseReader->select($queryPMKTag, "", 0, 0, 0,0 , false, false);
+			$lastTagId = $lastTagIdArray[0][0];
+			
+			$tagsJuicesQuery = 'INSERT INTO tblJuicesTags (fnkJuiceId,fnkTagId) VALUES(?,?)';
+			$data3 = array($lastJuiceId,$lastTagId);
+			$results3 = $thisDatabaseWriter->insert($tagsJuicesQuery,$data3);
+		}
+		
+		
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
         // SECTION: 2f Create message
@@ -169,7 +228,7 @@ if (isset($_POST["btnSubmit"])) {
         // build a message to display on the screen in section 3a and to mail
         // to the person filling out the form (section 2g).
 
-        $message = '<h2>Your information.</h2>';
+        $message = '<h2>Thank you for submitting an E-Juice to JuiceStar!</h2><p>Your Juice\'s info is listed below!</p><p><i>Remember, we only use your email to confirm the submission, we do not store it.</i></p>';
 
         foreach ($_POST as $key => $value) {
 
@@ -193,11 +252,11 @@ if (isset($_POST["btnSubmit"])) {
         $to = $email; // the person who filled out the form
         $cc = "";
         $bcc = "";
-        $from = "noreply@ejuice.com";
+        $from = "noreply@juicestar.com";
 
         // subject of mail should make sense to your form
         $todaysDate = strftime("%x");
-        $subject = "Research Study: " . $todaysDate;
+        $subject = "Juice Submission: " . $todaysDate;
 
         $mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
         
@@ -289,12 +348,9 @@ if (isset($_POST["btnSubmit"])) {
               id="frmRegister">
 
             <fieldset class="wrapper">
-                <legend>Add an EJuice</legend>
+                <br>
                 <p>Add an E-Juice you've tried!</p>
-
-                <fieldset class="wrapperTwo">
-                   
-
+				
                     <fieldset class="contact">
                         <legend>Juice Information</legend>
                         <label for="txtJuiceName" class="required">E-Juice Name
@@ -305,55 +361,69 @@ if (isset($_POST["btnSubmit"])) {
                                    onfocus="this.select()"
                                    autofocus>
                         </label>
-                        
-                        <label for="txtEmail" class="required">Email
+                        <br />
+						
+                        <label for="txtEmail" class="required">Your Email
                             <input type="text" id="txtEmail" name="txtEmail"
                                    value="<?php print $email; ?>"
-                                   tabindex="110" maxlength="45" placeholder="Enter a valid email address"
+                                   tabindex="110" maxlength="100" placeholder="Enter a valid email address"
                                    <?php if ($emailERROR) print 'class="mistake"'; ?>
                                    onfocus="this.select()" 
                                    >
                         </label>
+						<br>
 						
-						<label for="txtLink" class="required">Link
+						<label for="txtLink" class="required">E-Juice Link
                             <input type="text" id="txtLink" name="txtLink"
                                    value="<?php print $link; ?>"
-                                   tabindex="120" maxlength="45" placeholder="Enter a valid URL"
+                                   tabindex="120" maxlength="5000" placeholder="Enter a valid URL"
                                    <?php if ($linkERROR) print 'class="mistake"'; ?>
                                    onfocus="this.select()" 
                                    >
                         </label>
-						
-						<label for="txtVendor" class="required">Vendor
+						<br>
+						<label for="txtVendor" class="required">E-Juice Vendor
                             <input type="text" id="txtVendor" name="txtVendor"
                                    value="<?php print $vendor; ?>"
-                                   tabindex="130" maxlength="45" placeholder="Enter the E-Juice Vendor"
+                                   tabindex="130" maxlength="100" placeholder="Enter the E-Juice Vendor"
+                                   <?php if ($vendorERROR) print 'class="mistake"'; ?>
+                                   onfocus="this.select()" 
+                                   >
+                        </label>
+						<br>
+						<label for="txtTags" class="">E-Juice Tags
+                            <input type="text" id="txtTags" name="txtTags"
+                                   value="<?php print $tags; ?>"
+                                   tabindex="130" maxlength="100" placeholder="Separate with spaces"
                                    <?php if ($vendorERROR) print 'class="mistake"'; ?>
                                    onfocus="this.select()" 
                                    >
                         </label>
                     </fieldset> <!-- ends contact -->
                     
-                </fieldset> <!-- ends wrapper Two -->
-                <fieldset class="listbox">
-                        <legend>Rating</legend>
-                        <select id="lstRating"
-                                name="lstRating"
-                                tabindex="400">
-                            
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                </fieldset><!-- ends listbox -->
-
-                <fieldset class="buttons">
-                    <legend></legend>
-                    <input type="submit" id="btnSubmit" name="btnSubmit" value="Register" tabindex="900" class="button">
-                </fieldset> <!-- ends buttons -->
+                
+				<br>
+				
+                <fieldset class="starRating">
+					<legend>Rating</legend>
+					<input type="radio" class="rating-input"
+						id="rating-input-1-5" name="lstRating" value="5">
+					<label for="rating-input-1-5" class="rating-star"></label>
+					<input type="radio" class="rating-input"
+						id="rating-input-1-4" name="lstRating" value="4">
+					<label for="rating-input-1-4" class="rating-star"></label>
+					<input type="radio" class="rating-input"
+						id="rating-input-1-3" name="lstRating" value="3">
+					<label for="rating-input-1-3" class="rating-star"></label>
+					<input type="radio" class="rating-input"
+						id="rating-input-1-2" name="lstRating" value="2">
+					<label for="rating-input-1-2" class="rating-star"></label>
+					<input type="radio" class="rating-input"
+						id="rating-input-1-1" name="lstRating" value="1">
+					<label for="rating-input-1-1" class="rating-star"></label>
+				</fieldset>
+				<br>
+                <input type="submit" id="btnSubmit" name="btnSubmit" value="Register" tabindex="900" class="button">
                 
             </fieldset> <!-- Ends Wrapper -->
         </form>

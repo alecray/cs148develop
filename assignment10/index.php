@@ -3,16 +3,34 @@
 // Begin output
 print '<article>';
 $columns = 6;
-		
+	$num = 10;
+	$start = 0;	
+	if(isset($_GET['num'])){
+		$num = $_GET['num'];
+	}
+	if(isset($_GET['start'])){
+		$start = $_GET['start'];
+	}
 	print '<table class="juiceList">';
-	$query = file_get_contents("sql/q01.sql");
-	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 0, 0,0 , false, false);
+	$query = "SELECT pmkJuiceId, fldName, fldLink, fldRating, fldVendor, fldDate, fldTag
+			  FROM tblJuices  
+			  JOIN tblJuicesTags ON tblJuicesTags.fnkJuiceId = tblJuices.pmkJuiceId
+			  JOIN tblTags ON tblTags.pmkTagId = tblJuicesTags.fnkTagId
+			  GROUP BY fldName
+			  ORDER BY fldRating DESC 
+			  LIMIT " . $num . " OFFSET " . $start;
+	$query2 = "SELECT fldName, fldLink, fldRating, fldVendor, fldDate 
+			   FROM tblJuices 
+			   ORDER BY fldRating DESC";
+	//$testquery = $thisDatabaseReader->testquery($query, "", 0, 1, 0,0 , false, false);
 	//print $query;
 	print '<br>';
-	$info2 = $thisDatabaseReader->select($query, "", 0, 0, 0,0 , false, false);
+	$info2 = $thisDatabaseReader->select($query, "", 0, 1, 0,0 , false, false);
+	$totalQuery = $thisDatabaseReader->select($query2, "", 0, 1, 0,0 , false, false);
 	$fields = array_keys($info2[0]);
 	$labels = array_filter($fields, "is_string");
 	$numRecords = count($info2);
+	$totalNum = count($totalQuery);
     $highlight = 0; // used to highlight alternate rows
 	print '<br>';
 	
@@ -22,8 +40,14 @@ $columns = 6;
 		foreach ($camelCase as $one) {
 			$message .= $one . " ";
 		}
-		print '<th>' . $message . '</th>';
+		if ($message == "Link " or $message == "JuiceId "){
+			print '';
+		}
+		else {
+			print '<th>' . $message . '</th>';
+		}
 	}
+	print '<tr class="separator" />';
     foreach ($info2 as $rec) {
         $highlight++;
         if ($highlight % 2 != 0) {
@@ -33,66 +57,61 @@ $columns = 6;
         }
         print '<tr class="' . $style . '">';
         for ($i = 0; $i < $columns; $i++) {
-			/*if($rec[$i] == 0 or $rec[$i] == 1 or $rec[$i] == 2 or $rec[$i] == 3 or $rec[$i] == 4 or $rec[$i] == 5){
+			if($i == 0){
+				print '';
+			}
+			if($i == 1){
+				print '<td><a href="http://' . $rec[2] . '" target="_blank">' . $rec[1] . '</td>';
+				$i=3;
+			}
+			
+			if($i == 3){
 				print '<td>';
-				for($s=0; $s<$rec[$i];$s++){
-					print '☆';
+				for ($s = 0; $s < $rec[$i]; $s++){
+					print '<img src="images/star.png" width="20px">';
 				}
 				print '</td>';
-			}*/
-            print '<td>' . $rec[$i] . '</td>';
+				$i = 4;
+			}
+			if($i == 5){
+				print '<td>';
+				$datePieces = explode(" ", $rec[$i]);
+				$rec[$i] = $datePieces[0];
+				print $rec[$i] . '</td>';
+				$i = 6;
+			}
+			if($i == 6 or $i == 4){
+				print '<td>' . $rec[$i] . '</td>';
+				
+			}
+			if($admin == 1 and $i > 5){
+				print '<td style="padding-right: 0px;min-width: 50px;"><a href="addJuiceForm.php?id='.$rec[0].'">[ Edit ]</a></td>';
+			}
         }
         print '</tr>';
+		print '<tr class="separator" />';
     }
 
     // all done
     print '</table>';
-	print '<br>';
-	print '<p class="entries">'.$numRecords . ' Entries</p>';
-print '</article>';
-?>
-<?php 
-/*
-$totalCredits = 0;
-$totalCreditsSemester = 0;
-$semester = " ";
-$year = " ";
-foreach($info2 as $row){
-	$year = $row["pmkYear"];
-	if($row["pmkTerm"] != $semester or $semester == " "){ //if the semester is new or we havent started yet
-		if($semester != " "){ 	// if the semester is not new
-			print "</ol>";
-			print "<br>";
-			print "<p><strong>Credits: " . $totalCreditsSemester . "</strong></p>";
-			$totalCreditsSemester = 0;
-			print "</section>";
-		}
-		print "<section class='termSection" . $row["pmkTerm"] . "'>";
-		print "<h3 class='termAndYear'>". $row["pmkTerm"] . " " . $row["pmkYear"] . "</h3><br>";
-		print "<ol>";
-	}
-	print "<li>";
-	print $row["fldDepartment"] . " " . $row["fldCourseNumber"];
-	print "</li>";
-	if(!empty($row["pmkTerm"])){ 
-		$semester = $row["pmkTerm"];
+	print '<section class="buttons">';
+	$increment = 10;
+	if($start<=0){
+		print '<button>Previous</button>';
 	}	
-	$totalCreditsSemester = $totalCreditsSemester + $row["fldCredits"];
-	$totalCredits = $totalCredits + $row["fldCredits"];
-}
-print "</ol>";
-print "<br>";
-print "<p><strong>Credits: " . $totalCreditsSemester . "</strong></p>";
-print "</section>";
-print "<br>";
-print "<section class='finalSec'>";
-print "<p><strong>Total Credits: " . $totalCredits . "</strong></p>";
-print "</section>";
-*/
-?>
-
-<?php
-print "<br>";
+	else { 
+		print '<a href="index.php?num=10&start='. ($start - $increment) .'"><button>Previous</button></a>';
+	}
+	if ($start>=$totalNum-10){
+		print '<button>Next</button>';
+	}
+	else {
+		print '<a href="index.php?num=10&start='. ($start + $increment) .'"><button>Next</button></a>';
+	}
+	print '<br>';
+	print '<p class="entries">' . $start . ' - ' . ($start+$num) . ' Entries</p>';
+	print '</section>';
+print '</article>';
 
 include "footer.php";
 ?>

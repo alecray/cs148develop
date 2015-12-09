@@ -8,7 +8,7 @@ require_once('lib/custom-functions.php');
         <title>JuiceStar</title>
         <meta charset="utf-8">
         <meta name="author" content="Alec Ray">
-        <meta name="description" content="JuiceStar">
+        <meta name="description" content="E-Juice rating website.">
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -56,7 +56,6 @@ require_once('lib/custom-functions.php');
         foreach ($_SERVER as $key => $value) {
             $_SERVER[$key] = sanitize($value, false);
         }
-        $username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
 		
         $domain = "//"; // let the server set http or https as needed
 
@@ -128,6 +127,23 @@ require_once('lib/custom-functions.php');
         $dbUserName = get_current_user() . '_admin';
         $whichPass = "a";
         $thisDatabaseAdmin = new Database($dbUserName, $whichPass, $dbName);
+		
+		/* ------------------- ADMIN CHECKING --------------------- */
+		$username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
+		
+		$admin = 0;
+		$adminColumns = 1;
+		$checkAdminQuery = 'SELECT fldAdmin FROM tblAdmins';
+		$admins = $thisDatabaseReader->select($checkAdminQuery, "", 0, 0, 0,0 , false, false);
+		
+		foreach($admins as $anAdmin){
+			
+			for ($i = 0; $i < $adminColumns; $i++) {
+				if($username == $anAdmin[$i]){
+					$admin = 1;
+				}
+			}
+		}
         ?>	
 
     </head>
@@ -135,7 +151,6 @@ require_once('lib/custom-functions.php');
     <!-- **********************     Body section      ********************** -->
     <?php
     print '<body id="' . $path_parts['filename'] . '">';
-	print "<p class='user'>User: ".$username."</p>";
     include "header.php";
     include "nav.php";
     ?>
